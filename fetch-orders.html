@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch Selldone Baskets</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-5">
+<div class="card p-4 shadow-sm">
+    <h1 class="mb-4">Get Orders</h1>
+    <div class="mb-3">
+        <label for="shop-id" class="form-label">Shop ID:</label>
+        <input type="number" id="shop-id" class="form-control" value="1" min="1" placeholder="Enter Shop ID">
+    </div>
+    <div class="mb-3">
+        <label for="token" class="form-label">Bearer Token:</label>
+        <input type="text" id="token" class="form-control" placeholder="Enter Bearer Token">
+    </div>
+    <button class="btn btn-primary mb-3" onclick="fetchBaskets()">Fetch Orders</button>
+    <div class="mb-3">
+        <label for="url" class="form-label">API URL:</label>
+        <input type="text" id="url" class="form-control" readonly>
+    </div>
+
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="list-tab" data-bs-toggle="tab" data-bs-target="#list" type="button" role="tab" aria-controls="list" aria-selected="true">Order List</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="raw-tab" data-bs-toggle="tab" data-bs-target="#raw" type="button" role="tab" aria-controls="raw" aria-selected="false">Raw Data</button>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="list" role="tabpanel" aria-labelledby="list-tab">
+            <div id="order-list" class="mt-3"></div>
+        </div>
+        <div class="tab-pane fade" id="raw" role="tabpanel" aria-labelledby="raw-tab">
+            <pre id="output" class="bg-light p-3 border mt-3"></pre>
+        </div>
+    </div>
+</div>
+
+<script src="helper.js"></script>
+<script>
+    async function fetchBaskets() {
+        const shopId = document.getElementById('shop-id').value || 1;
+        const token = document.getElementById('token').value;
+        const outputElement = document.getElementById('output');
+        const urlElement = document.getElementById('url');
+        const orderListElement = document.getElementById('order-list');
+
+        if (!token) {
+            outputElement.textContent = 'Please enter a Bearer token.';
+            return;
+        }
+
+        const url = `https://api.selldone.com/shops/${shopId}/process-center/baskets-PHYSICAL?offset=0&limit=10&sortDesc=true&statuses[]=Payed&buyer=true&with[]=items&with[]=buyer&with[]=products`;
+        urlElement.value = url;
+
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok: ' + response.statusText);
+            }
+
+            const data = await response.json();
+            outputElement.textContent = JSON.stringify(data, null, 2);
+            displayOrders(data);
+        } catch (error) {
+            outputElement.textContent = 'Error: ' + error.message;
+        }
+    }
+
+    function displayOrders(data) {
+        const orderListElement = document.getElementById('order-list');
+        orderListElement.innerHTML = '';
+
+        if (!data || !data.orders || data.orders.length === 0) {
+            orderListElement.innerHTML = '<p>No orders found.</p>';
+            return;
+        }
+
+        const orders = data.orders;
+
+        orders.forEach(order => {
+            const orderCard = document.createElement('div');
+            orderCard.className = 'card mb-3';
+            const orderHeader = `<div class="card-header">Order ID: ${order.id}</div>`;
+            let orderBody = '<div class="card-body">';
+
+            orderBody += `
+                <p><strong>Checkout Date:</strong> ${new Date(order.reserved_at).toLocaleString()}</p>
+                <p><strong>Delivery Status:</strong> ${order.delivery_state}</p>
+                <p><strong>Receiver Info:</strong></p>
+                <ul>
+                    <li><strong>Name:</strong> ${order.receiver_info.name}</li>
+                    <li><strong>Phone:</strong> ${order.receiver_info.phone}</li>
+                    <li><strong>Address:</strong> ${order.receiver_info.address}, ${order.receiver_info.city}, ${order.receiver_info.state}, ${order.receiver_info.country}</li>
+                </ul>
+            `;
+
+            if (order.items && order.items.length > 0) {
+                order.items.forEach(item => {
+                    const productImage = GET_SHOP_IMAGE_PATH(item.product?.icon, 128);
+                    orderBody += `
+                        <div class="d-flex align-items-center mb-2">
+                            <img src="${productImage}" alt="Product Image" class="me-3 border rounded-3 overflow-hidden" width="80" height="80">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1">${item.product?.title || 'No Title'}</h6>
+                                <p class="mb-0">SKU: ${item.product?.sku || 'N/A'}</p>
+                                <p class="mb-0">MPN: ${item.product?.mpn || 'N/A'}</p>
+                            </div>
+                            <div class="text-end">
+                                <span class="badge bg-black fs-5">${item.count} <small style="font-size: 9px;display: block">Count</small> </span>
+                            </div>
+                        </div>
+                    `;
+                });
+            } else {
+                orderBody += '<p>No items found in this order.</p>';
+            }
+
+            orderBody += '</div>';
+            orderCard.innerHTML = orderHeader + orderBody;
+            orderListElement.appendChild(orderCard);
+        });
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
