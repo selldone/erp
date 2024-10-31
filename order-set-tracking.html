@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update Selldone Orders</title>
+    <title>SD | 🧪 Set Order Tracking</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="container my-5">
@@ -43,6 +43,20 @@
 
 <script src="helper.js"></script>
 <script>
+    // Auto-fill fields from query parameters
+    function autoFillFields() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const shopId = urlParams.get('shopId');
+        const orderId = urlParams.get('orderId');
+
+        if (shopId) {
+            document.getElementById('shop-id').value = shopId;
+        }
+        if (orderId) {
+            document.getElementById('order-id').value = orderId;
+        }
+    }
+
     async function updateOrder() {
         const shopId = document.getElementById('shop-id').value || 1;
         const token = document.getElementById('token').value;
@@ -87,6 +101,9 @@
             outputElement.textContent = 'Error: ' + error.message;
         }
     }
+
+    // Call autoFillFields on page load
+    document.addEventListener('DOMContentLoaded', autoFillFields);
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
