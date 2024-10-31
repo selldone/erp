@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fetch Selldone Baskets</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
 </head>
 <body class="container my-5">
 <div class="card p-4 shadow-sm">
@@ -100,7 +101,7 @@
 
             orderBody += `
                 <p><strong>Checkout Date:</strong> ${new Date(order.reserved_at).toLocaleString()}</p>
-                <p><strong>Delivery Status:</strong> ${order.delivery_state}</p>
+                <div><strong>Delivery Status:</strong> ${order.delivery_state} ${renderDeliveryProgress(order.delivery_state)}</div>
                 <p><strong>Receiver Info:</strong></p>
                 <ul>
                     <li><strong>Name:</strong> ${order.receiver_info.name}</li>
@@ -135,6 +136,47 @@
             orderListElement.appendChild(orderCard);
         });
     }
+
+    function renderDeliveryProgress(deliveryState) {
+        const stages = [
+            { state: "OrderConfirm", label: "Order Confirmed" },
+            { state: "PreparingOrder", label: "Preparing Order" },
+            { state: "SentOrder", label: "Sent Order" },
+            { state: "ToCustomer", label: "To Customer" },
+            { state: "Returned", label: "Returned" }
+        ];
+
+        let progressHTML = '<div class="d-inline-flex align-items-center mb-2 position-relative ms-3">';
+
+
+        // Add a connecting line after each circle, except the last one
+        progressHTML += `
+                <div style="flex-grow: 1; height: 2px; background-color: #ddd; position:absolute;left: 32px;right: 32px;top: 9px;"></div>
+            `;
+
+        stages.forEach((stage, index) => {
+            const isActive = stages.findIndex(s => s.state === deliveryState) >= index;
+
+
+            // Add the circle for the current stage
+            progressHTML += `
+            <div class="text-center position-relative" style="min-width: 64px;z-index: 1">
+                <div class="rounded-circle border border-2 d-inline-block ${isActive ? "bg-black" : "bg-light"}" style="width: 20px; height: 20px;"></div>
+                <div class="small" style="font-size: 8px">${stage.label}</div>
+            </div>
+        `;
+
+
+        });
+
+
+
+        progressHTML += '</div>';
+        return progressHTML;
+    }
+
+
+
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
