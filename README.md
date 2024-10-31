@@ -11,7 +11,7 @@ connections with third-party software.
 
 ## Token Generation
 
-### Step 1: Create a Token Generation Link
+### Step 1: Select Shop
 
 **Important:** The user must be logged in to Selldone.
 
@@ -21,23 +21,25 @@ Create a link with the following format:
 https://selldone.com/auth/erp?scopes[]=backoffice:order:read&scopes[]=backoffice:order:write
 ```
 
+🌐 Localized urls are supported: `https://zh.selldone.com/auth/erp?scopes[]=backoffice:order:read&scopes[]=backoffice:order:write`
+
 When the user accesses this link, they can select their shop from the page:
 
 ![Select Shop](_doc/select-shop.png)
 
-### Step 2: Retrieve the Token
+### Step 2: Token Generation
 
 After selecting the shop, the user will be redirected to a page displaying the token:
 
 ![Token Page](_doc/show-token.png)
 
-## Managing Tokens
+### Managing Tokens
 
 You can view and revoke created tokens by visiting:
 
 [https://selldone.com/developer/access](https://selldone.com/developer/access)
 
-## Get Orders
+## API: Get Orders
 
 To fetch orders from a Selldone shop, send a `GET` request to the following endpoint:
 
@@ -121,11 +123,11 @@ integration:
 
 ---
 
-# Update Order
+## API: Update Order
 
 This guide provides instructions on how to update order statuses using the Selldone API. It outlines the steps of order fulfillment and how to communicate these updates through API calls.
 
-## Updating Order Status
+### Updating Order Status
 
 You can update the status of orders by sending a `POST` request to the following endpoint:
 
@@ -140,7 +142,7 @@ Replace `{shop-id-here}` with your actual shop ID and `{order-id-here}` with the
 
 Selldone defines 5 steps in the order fulfillment process, which you can manage by updating the `delivery_state` parameter. Each state should be called sequentially after the previous one.
 
-### 1. Confirm Order (`OrderConfirm`)
+#### 1. Confirm Order (`OrderConfirm`)
 
 This step indicates that the order has been reviewed and confirmed.
 
@@ -149,7 +151,7 @@ This step indicates that the order has been reviewed and confirmed.
 - `state`: `OrderConfirm`
 - `list`: An array of `item.id`s that are confirmed. If you cannot fulfill an item, do not include its ID in this list. This helps the merchant understand how much to refund to the buyer in the Selldone panel.
 
-### 2. Prepare Order (`PreparingOrder`)
+#### 2. Prepare Order (`PreparingOrder`)
 
 At this stage, you set packaging information and indicate that the order is ready to ship (e.g., ready for courier pickup).
 
@@ -158,7 +160,7 @@ At this stage, you set packaging information and indicate that the order is read
 - `state`: `PreparingOrder`
 - `delivery_info`: If there are no changes to `delivery_info`, send the original `order.delivery_info` in this parameter.
 
-### 3. Send Order (`SentOrder`)
+#### 3. Send Order (`SentOrder`)
 
 Use this when the order has been shipped (e.g., handed over to DHL).
 
@@ -166,7 +168,7 @@ Use this when the order has been shipped (e.g., handed over to DHL).
 
 - `state`: `SentOrder`
 
-### 4. Deliver to Customer (`ToCustomer`)
+#### 4. Deliver to Customer (`ToCustomer`)
 
 (Optional) This step indicates that the buyer has received their order.
 
@@ -174,7 +176,7 @@ Use this when the order has been shipped (e.g., handed over to DHL).
 
 - `state`: `ToCustomer`
 
-### Shipping Failed and Order Returned
+#### Shipping Failed and Order Returned
 
 If the shipping fails and the order is returned, send a `POST` request to the following endpoint:
 
@@ -190,7 +192,7 @@ https://api.selldone.com/shops/{shop-id-here}/process-center/baskets/{order-id-h
 
 
 
-## Set Tracking Information
+## API: Set Tracking Information
 
 You can set the tracking code and URL for the order by sending a `PUT` request to:
 
@@ -205,5 +207,5 @@ https://api.selldone.com/shops/{shop-id-here}/process-center/baskets/{order-id-h
 
 
 
-## Web Page
+### Web Page
 https://selldone.github.io/erp/
