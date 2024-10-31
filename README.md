@@ -97,7 +97,7 @@ The endpoint accepts the following query parameters:
 To synchronize orders without fetching all orders every time, use the `updated_at` query parameter. Send the last sync
 date as a timestamp (integer), and the endpoint will return orders updated after this date.
 
-## Order Structure
+### Order Structure
 
 Below is an overview of the important parameters returned in the order data, which are critical for ERP software
 integration:
