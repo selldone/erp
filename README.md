@@ -149,7 +149,39 @@ This step indicates that the order has been reviewed and confirmed.
 **Parameters:**
 
 - `state`: `OrderConfirm`
-- `list`: An array of `item.id`s that are confirmed. If you cannot fulfill an item, do not include its ID in this list. This helps the merchant understand how much to refund to the buyer in the Selldone panel.
+- `list`: An array of `item.id`s that are confirmed. If you cannot fulfill an item, do not include its ID in this list. This helps the merchant understand how much to refund to the buyer in the Selldone panel. `null` means all items are confirmed.
+
+```bash
+curl -X POST "https://api.selldone.com/shops/12345/process-center/baskets/67890/state" \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer abcdef123456" \
+     -d '{
+           "state": "OrderConfirm",
+           "list": [23990, 23991]
+         }'
+
+```
+Response 200:
+```json
+{
+  "delivery_state": "OrderConfirm",
+  "updated": 2,
+  "changed": true,
+  "items": [
+    {
+      "id": 23990,
+      "basket_id": 15002,
+      "product_id": 2346,
+      "variant_id": null,
+      ...
+    }
+  ,...
+   
+  ]
+}
+
+```
+
 
 #### 2. Prepare Order (`PreparingOrder`)
 
@@ -158,7 +190,44 @@ At this stage, you set packaging information and indicate that the order is read
 **Parameters:**
 
 - `state`: `PreparingOrder`
-- `delivery_info`: If there are no changes to `delivery_info`, send the original `order.delivery_info` in this parameter.
+- `delivery_info`: If there are no changes to `delivery_info`, send the original `order.delivery_info` in this parameter. `null` means no changes.
+
+```bash
+curl -X POST "https://api.selldone.com/shops/12345/process-center/baskets/67890/state" \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer abcdef123456" \
+     -d '{
+           "state": "PreparingOrder",
+           "list": null,
+           "delivery_info": {
+             "distance": 11312.99,
+             "volume": {
+               "width": 0,
+               "length": 0,
+               "height": 0
+             },
+             "weight": 0,
+             "days": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Saturday"],
+             "time_spans": ["Morning", "Evening"],
+             "custom": false,
+             "type": "Cargo",
+             "connect_delivery": 0,
+             "inbound_delivery": 2,
+             "outbound_delivery": 0,
+             "vendor_delivery": 0,
+             "date": null
+           }
+         }'
+
+```
+Response 200:
+```json
+{
+  "delivery_state": "PreparingOrder",
+  "changed": true
+}
+
+```  
 
 #### 3. Send Order (`SentOrder`)
 
@@ -168,6 +237,27 @@ Use this when the order has been shipped (e.g., handed over to DHL).
 
 - `state`: `SentOrder`
 
+```bash
+curl -X POST "https://api.selldone.com/shops/12345/process-center/baskets/67890/state" \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer abcdef123456" \
+     -d '{
+           "state": "SentOrder",
+           "list": null,
+           "delivery_info": null
+         }'
+
+```
+Response 200:
+```json
+{
+  "delivery_state": "SentOrder",
+  "changed": true
+}
+
+```
+
+
 #### 4. Deliver to Customer (`ToCustomer`)
 
 (Optional) This step indicates that the buyer has received their order.
@@ -175,6 +265,27 @@ Use this when the order has been shipped (e.g., handed over to DHL).
 **Parameters:**
 
 - `state`: `ToCustomer`
+
+```bash
+curl -X POST "https://api.selldone.com/shops/12345/process-center/baskets/67890/state" \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer abcdef123456" \
+     -d '{
+           "state": "ToCustomer",
+           "list": null,
+           "delivery_info": null
+         }'
+
+```
+Response 200:
+```json
+{
+  "delivery_state": "ToCustomer",
+  "delivery_at": "2024-10-31T15:32:07.000000Z",
+  "changed": true
+}
+
+```
 
 #### Shipping Failed and Order Returned
 
