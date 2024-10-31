@@ -1,4 +1,4 @@
-# ERP Integration with Selldone Shops
+# ERP Integration + Selldone Shops
 
 Integrate your ERP software with Selldone shops seamlessly. This guide will help you quickly connect your ERP system to
 Selldone, enabling you to manage orders efficiently.
@@ -78,7 +78,7 @@ and `sortDesc=false` to the query string.
 
 ### Testing the Fetch Orders Endpoint
 
-You can test this endpoint using the provided **[Fetch Orders Demo](https://selldone.github.io/erp/fetch-orders.html)**.
+✨ You can test this endpoint using the provided **[Fetch Orders Demo](https://selldone.github.io/erp/fetch-orders.html)**.
 
 ### Query Parameters
 
