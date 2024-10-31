@@ -45,7 +45,7 @@ To fetch orders from a Selldone shop, send a `GET` request to the following endp
 https://api.selldone.com/shops/{shop-id-here}/process-center/baskets-PHYSICAL?offset=0&limit=10&sortDesc=true&statuses[]=Payed&buyer=true&with[]=items&with[]=buyer&with[]=products
 ```
 
-Replace `${shopId}` with the actual shop ID.
+Replace `{shop-id-here}` with the actual shop ID.
 
 This endpoint returns a list of `PHYSICAL` orders with full details. The maximum `limit` is **250**.
 
