@@ -37,7 +37,7 @@ You can view and revoke created tokens by visiting:
 
 [https://selldone.com/developer/access](https://selldone.com/developer/access)
 
-## Fetching Orders
+## Get Orders
 
 To fetch orders from a Selldone shop, send a `GET` request to the following endpoint:
 
@@ -95,7 +95,7 @@ The endpoint accepts the following query parameters:
 To synchronize orders without fetching all orders every time, use the `updated_at` query parameter. Send the last sync
 date as a timestamp (integer), and the endpoint will return orders updated after this date.
 
-## Understanding the Order Structure
+## Order Structure
 
 Below is an overview of the important parameters returned in the order data, which are critical for ERP software
 integration:
@@ -117,7 +117,7 @@ integration:
 | **Buyer Information (`buyer`)**            | Information about the buyer (can be `null` if it's a guest shop). Includes: <br/> - **Name (`name`)**: Name of the buyer. <br/> - **Email (`email`)**: Email address for communication. <br/> - **Phone (`phone`)**: Phone number of the buyer.                                                                                                                                                                                                                                                                            |
 | **Checkout Date (`reserved_at`)**          | Timestamp of when the order was checked out.                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 
-[More details about response structure.](./response-structure.md)
+[**More details about response structure.**](./response-structure.md)
 
 ---
 
