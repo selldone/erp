@@ -51,10 +51,10 @@ This endpoint returns a list of `PHYSICAL` orders with full details. The maximum
 
 ### Order Types
 
-For ERP systems, you typically need to work with physical (goods) orders. Selldone supports various order types,
+For ERP systems, you typically need to work with **physical** (goods) orders. Selldone supports various order types,
 including:
 
-- `PHYSICAL`
+- `PHYSICAL`    ERPs work only with this.
 - `FILE`
 - `SERVICE`
 - `VIRTUAL`
