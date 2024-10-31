@@ -21,7 +21,11 @@ Create a link with the following format:
 https://selldone.com/auth/erp?scopes[]=backoffice:order:read&scopes[]=backoffice:order:write
 ```
 
-🌐 Localized urls are supported: `https://zh.selldone.com/auth/erp?scopes[]=backoffice:order:read&scopes[]=backoffice:order:write`
+🌐 Localized urls are supported: 
+
+```
+https://zh.selldone.com/auth/erp?scopes[]=backoffice:order:read&scopes[]=backoffice:order:write
+```
 
 When the user accesses this link, they can select their shop from the page:
 
