@@ -9,9 +9,9 @@ Since ERP software often runs on local machines, you need to create a token for 
 requiring any server-side code. Selldone provides a simple method for generating personal tokens to facilitate secure
 connections with third-party software.
 
-✨ **[Fetch Orders Demo](https://selldone.github.io/erp/fetch-orders.html)**.
+✨ **[Fetch Orders Demo](https://selldone.github.io/erp/orders-list.html)**.
 
-✨ **[Update Order Demo](https://selldone.github.io/erp/update-order.html)**.
+✨ **[Update Order Demo](https://selldone.github.io/erp/order-update-state.html)**.
 
 ## Token Generation
 
@@ -82,7 +82,7 @@ and `sortDesc=false` to the query string.
 
 ### Testing the Fetch Orders Endpoint
 
-✨ **[Fetch Orders Demo](https://selldone.github.io/erp/fetch-orders.html)**.
+✨ **[Fetch Orders Demo](https://selldone.github.io/erp/orders-list.html)**.
 
 ### Query Parameters
 
@@ -297,7 +297,7 @@ Response 200:
 
 ### Testing the Update Order Endpoint
 
-✨ **[Update Order Demo](https://selldone.github.io/erp/update-order.html)**.
+✨ **[Update Order Demo](https://selldone.github.io/erp/order-update-state.html)**.
 
 
 #### Shipping Failed and Order Returned
