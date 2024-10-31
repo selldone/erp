@@ -13,6 +13,9 @@ connections with third-party software.
 
 ✨ **[Update Order Demo](https://selldone.github.io/erp/order-update-state.html)**.
 
+✨ **[Set Order Tracking Demo](https://selldone.github.io/erp/order-set-tracking.html)**.
+
+
 ## Token Generation
 
 ### Step 1: Select Shop
@@ -329,7 +332,9 @@ https://api.selldone.com/shops/{shop-id-here}/process-center/baskets/{order-id-h
 - `tracking_code` (optional): The tracking code of the order (any string).
 - `tracking_url` (optional): The tracking URL of the order (must be a valid URL).
 
+### Testing the Set Tracking Information Endpoint
 
+✨ **[Set Order Tracking Demo](https://selldone.github.io/erp/order-set-tracking.html)**.
 
 ### Web Page
 https://selldone.github.io/erp/
