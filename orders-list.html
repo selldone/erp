@@ -91,41 +91,48 @@
             return;
         }
 
+        const shopId = document.getElementById('shop-id').value || 1;
         const orders = data.orders;
 
         orders.forEach(order => {
             const orderCard = document.createElement('div');
             orderCard.className = 'card mb-3';
-            const orderHeader = `<div class="card-header">Order ID: ${order.id}</div>`;
+            const orderHeader = `
+            <div class="card-header">
+                Order ID: ${order.id}
+                <a href="https://selldone.github.io/erp/order-update-state.html?orderId=${order.id}&shopId=${shopId}" target="_blank" class="ms-3 btn btn-sm btn-outline-dark">Update State</a>
+                <a href="https://selldone.github.io/erp/order-set-tracking.html?orderId=${order.id}&shopId=${shopId}" target="_blank" class="ms-3 btn btn-sm btn-outline-dark">Set Tracking</a>
+            </div>
+        `;
             let orderBody = '<div class="card-body">';
 
             orderBody += `
-                <p><strong>Checkout Date:</strong> ${new Date(order.reserved_at).toLocaleString()}</p>
-                <div><strong>Delivery Status:</strong> ${order.delivery_state} ${renderDeliveryProgress(order.delivery_state)}</div>
-                <p><strong>Receiver Info:</strong></p>
-                <ul>
-                    <li><strong>Name:</strong> ${order.receiver_info.name}</li>
-                    <li><strong>Phone:</strong> ${order.receiver_info.phone}</li>
-                    <li><strong>Address:</strong> ${order.receiver_info.address}, ${order.receiver_info.city}, ${order.receiver_info.state}, ${order.receiver_info.country}</li>
-                </ul>
-            `;
+            <p><strong>Checkout Date:</strong> ${new Date(order.reserved_at).toLocaleString()}</p>
+            <div><strong>Delivery Status:</strong> ${order.delivery_state} ${renderDeliveryProgress(order.delivery_state)}</div>
+            <p><strong>Receiver Info:</strong></p>
+            <ul>
+                <li><strong>Name:</strong> ${order.receiver_info.name}</li>
+                <li><strong>Phone:</strong> ${order.receiver_info.phone}</li>
+                <li><strong>Address:</strong> ${order.receiver_info.address}, ${order.receiver_info.city}, ${order.receiver_info.state}, ${order.receiver_info.country}</li>
+            </ul>
+        `;
 
             if (order.items && order.items.length > 0) {
                 order.items.forEach(item => {
                     const productImage = GET_SHOP_IMAGE_PATH(item.product?.icon, 128);
                     orderBody += `
-                        <div class="d-flex align-items-center mb-2">
-                            <img src="${productImage}" alt="Product Image" class="me-3 border rounded-3 overflow-hidden" width="80" height="80">
-                            <div class="flex-grow-1">
-                                <h6 class="mb-1">${item.product?.title || 'No Title'}</h6>
-                                <p class="mb-0">SKU: ${item.product?.sku || 'N/A'}</p>
-                                <p class="mb-0">MPN: ${item.product?.mpn || 'N/A'}</p>
-                            </div>
-                            <div class="text-end">
-                                <span class="badge bg-black fs-5">${item.count} <small style="font-size: 9px;display: block">Count</small> </span>
-                            </div>
+                    <div class="d-flex align-items-center mb-2">
+                        <img src="${productImage}" alt="Product Image" class="me-3 border rounded-3 overflow-hidden" width="80" height="80">
+                        <div class="flex-grow-1">
+                            <h6 class="mb-1">${item.product?.title || 'No Title'}</h6>
+                            <p class="mb-0">SKU: ${item.product?.sku || 'N/A'}</p>
+                            <p class="mb-0">MPN: ${item.product?.mpn || 'N/A'}</p>
                         </div>
-                    `;
+                        <div class="text-end">
+                            <span class="badge bg-black fs-5">${item.count} <small style="font-size: 9px;display: block">Count</small> </span>
+                        </div>
+                    </div>
+                `;
                 });
             } else {
                 orderBody += '<p>No items found in this order.</p>';
@@ -136,6 +143,7 @@
             orderListElement.appendChild(orderCard);
         });
     }
+
 
     function renderDeliveryProgress(deliveryState) {
         const stages = [
