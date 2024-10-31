@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Selldone Orders</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container my-5">
+<div class="card p-4 shadow-sm">
+    <h1 class="mb-4">
+        <svg id="Layer_1" enable-background="new 0 0 32 32" height="64" viewBox="0 0 32 32" width="64" xmlns="http://www.w3.org/2000/svg"><g id="_01"><g><path d="m23.8 30h-15.6c-3.3 0-6-2.7-6-6v-.2l.6-16c.1-3.3 2.8-5.8 6-5.8h14.4c3.2 0 5.9 2.5 6 5.8l.6 16c.1 1.6-.5 3.1-1.6 4.3s-2.6 1.9-4.2 1.9c0 0-.1 0-.2 0zm-15-26c-2.2 0-3.9 1.7-4 3.8l-.6 16.2c0 2.2 1.8 4 4 4h15.8c1.1 0 2.1-.5 2.8-1.3s1.1-1.8 1.1-2.9l-.6-16c-.1-2.2-1.8-3.8-4-3.8z"/></g><g><path d="m16 14c-3.9 0-7-3.1-7-7 0-.6.4-1 1-1s1 .4 1 1c0 2.8 2.2 5 5 5s5-2.2 5-5c0-.6.4-1 1-1s1 .4 1 1c0 3.9-3.1 7-7 7z"/></g></g></svg>
+        Update Order</h1>
+    <div class="mb-3">
+        <label for="shop-id" class="form-label">Shop ID:</label>
+        <input type="number" id="shop-id" class="form-control" value="1" min="1" placeholder="Enter Shop ID">
+    </div>
+    <div class="mb-3">
+        <label for="token" class="form-label">Bearer Token:</label>
+        <input type="text" id="token" class="form-control" placeholder="Enter Bearer Token">
+    </div>
+    <div class="mb-3">
+        <label for="order-id" class="form-label">Order ID:</label>
+        <input type="text" id="order-id" class="form-control" placeholder="Enter Order ID">
+    </div>
+    <div class="mb-3">
+        <label for="status-selector" class="form-label">Order Status:</label>
+        <select id="status-selector" class="form-select">
+            <option value="CheckQueue">CheckQueue</option>
+            <option value="OrderConfirm">OrderConfirm</option>
+            <option value="PreparingOrder">PreparingOrder</option>
+            <option value="SentOrder">SentOrder</option>
+            <option value="ToCustomer">ToCustomer</option>
+        </select>
+    </div>
+    <button class="btn btn-primary mb-3" onclick="updateOrder()">Update Order</button>
+    <div class="mb-3">
+        <label for="url" class="form-label">API URL:</label>
+        <input type="text" id="url" class="form-control" disabled readonly placeholder="Auto fill...">
+    </div>
+
+    <pre id="output" class="bg-light p-3 border mt-3"></pre>
+</div>
+
+<script src="helper.js"></script>
+<script>
+    async function updateOrder() {
+        const shopId = document.getElementById('shop-id').value || 1;
+        const token = document.getElementById('token').value;
+        const orderId = document.getElementById('order-id').value;
+        const status = document.getElementById('status-selector').value;
+        const outputElement = document.getElementById('output');
+        const urlElement = document.getElementById('url');
+
+        if (!token || !orderId || !status) {
+            outputElement.textContent = 'Please enter all required fields: Bearer token, Order ID, and Order Status.';
+            return;
+        }
+
+        const url = `https://api.selldone.com/shops/${shopId}/process-center/baskets/${orderId}/state`;
+        urlElement.value = url;
+
+        const updateData = JSON.stringify({ state: status });
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: updateData
+            });
+
+            if (!response.ok) {
+                const responseBody = await response.json();
+                throw new Error('Network response was not ok: \n' + JSON.stringify(responseBody, null, 2));
+            }
+
+            const data = await response.json();
+            outputElement.textContent = JSON.stringify(data, null, 2);
+        } catch (error) {
+            outputElement.textContent = 'Error: ' + error.message;
+        }
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

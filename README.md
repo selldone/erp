@@ -291,6 +291,11 @@ Response 200:
 
 ```
 
+### Testing the Update Order Endpoint
+
+✨ **[Update Order Demo](https://selldone.github.io/erp/update-order.html)**.
+
+
 #### Shipping Failed and Order Returned
 
 If the shipping fails and the order is returned, send a `POST` request to the following endpoint:
