@@ -78,7 +78,7 @@ and `sortDesc=false` to the query string.
 
 ### Testing the Fetch Orders Endpoint
 
-✨ You can test this endpoint using the provided **[Fetch Orders Demo](https://selldone.github.io/erp/fetch-orders.html)**.
+✨ Test Fetch Order: **[Fetch Orders Demo](https://selldone.github.io/erp/fetch-orders.html)**.
 
 ### Query Parameters
 
