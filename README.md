@@ -72,7 +72,7 @@ and `sortDesc=false` to the query string.
 
 ### Testing the Fetch Orders Endpoint
 
-You can test this endpoint using the provided **[Fetch Orders Demo](./fetch-orders.html)** file.
+You can test this endpoint using the provided **[Fetch Orders Demo](./fetch-orders.html)**.
 
 ### Query Parameters
 
