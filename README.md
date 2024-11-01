@@ -11,7 +11,7 @@ connections with third-party software.
 
 🎞️ **[How It Works Demo Video](https://demo.selldone.com/demo/cm2yjk5sh32o9esgv6ckru79r)**
 
-[![Watch on YouTube](https://img.youtube.com/vi/60bsxi1BUAA/0.jpg)](https://youtu.be/60bsxi1BUAA)
+[![Watch on YouTube](https://img.youtube.com/vi/60bsxi1BUAA/maxresdefault.jpg)](https://youtu.be/60bsxi1BUAA)
 
 
 ✨ **[Fetch Orders Demo](https://selldone.github.io/erp/orders-list.html)**
