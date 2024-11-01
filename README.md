@@ -9,11 +9,13 @@ Since ERP software often runs on local machines, you need to create a token for 
 requiring any server-side code. Selldone provides a simple method for generating personal tokens to facilitate secure
 connections with third-party software.
 
-✨ **[Fetch Orders Demo](https://selldone.github.io/erp/orders-list.html)**.
+🎞️ **[How It Works Demo Video](https://demo.selldone.com/demo/cm2yjk5sh32o9esgv6ckru79r)**
 
-✨ **[Update Order Demo](https://selldone.github.io/erp/order-update-state.html)**.
+✨ **[Fetch Orders Demo](https://selldone.github.io/erp/orders-list.html)**
 
-✨ **[Set Order Tracking Demo](https://selldone.github.io/erp/order-set-tracking.html)**.
+✨ **[Update Order Demo](https://selldone.github.io/erp/order-update-state.html)**
+
+✨ **[Set Order Tracking Demo](https://selldone.github.io/erp/order-set-tracking.html)**
 
 
 ## Token Generation
