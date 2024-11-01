@@ -55,7 +55,7 @@ You can view and revoke created tokens by visiting:
 To fetch orders from a Selldone shop, send a `GET` request to the following endpoint:
 
 ```
-https://api.selldone.com/shops/{shop-id-here}/process-center/baskets-PHYSICAL?offset=0&limit=10&sortDesc=true&statuses[]=Payed&buyer=true&with[]=items&with[]=buyer&with[]=products
+https://api.selldone.com/shops/{shop-id-here}/process-center/baskets-PHYSICAL?offset=0&limit=10&sortDesc=true&statuses[]=Payed&with[]=items&with[]=buyer&with[]=products
 ```
 
 Replace `{shop-id-here}` with the actual shop ID.

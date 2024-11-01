@@ -58,7 +58,7 @@
             return;
         }
 
-        const url = `https://api.selldone.com/shops/${shopId}/process-center/baskets-PHYSICAL?offset=0&limit=10&sortDesc=true&statuses[]=Payed&buyer=true&with[]=items&with[]=buyer&with[]=products`;
+        const url = `https://api.selldone.com/shops/${shopId}/process-center/baskets-PHYSICAL?offset=0&limit=10&sortDesc=true&statuses[]=Payed&with[]=items&with[]=buyer&with[]=products`;
         urlElement.value = url;
 
         try {
