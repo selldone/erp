@@ -13,13 +13,11 @@ connections with third-party software.
 
 [![Watch on YouTube](https://img.youtube.com/vi/60bsxi1BUAA/maxresdefault.jpg)](https://youtu.be/60bsxi1BUAA)
 
-
 ✨ **[Fetch Orders Demo](https://selldone.github.io/erp/orders-list.html)**
 
 ✨ **[Update Order Demo](https://selldone.github.io/erp/order-update-state.html)**
 
 ✨ **[Set Order Tracking Demo](https://selldone.github.io/erp/order-set-tracking.html)**
-
 
 ## Token Generation
 
@@ -30,10 +28,10 @@ connections with third-party software.
 Create a link with the following format:
 
 ```
-https://selldone.com/auth/erp?scopes[]=backoffice:order:read&scopes[]=backoffice:order:write
+https://selldone.com/auth/erp?scopes[]=selldone:identification&scopes[]=backoffice:shop:read&scopes[]=backoffice:order:read&scopes[]=backoffice:order:write&scopes[]=backoffice:product:read&scopes[]=backoffice:category:read
 ```
 
-🌐 Localized urls are supported: 
+🌐 Localized urls are supported:
 
 ```
 https://zh.selldone.com/auth/erp?scopes[]=backoffice:order:read&scopes[]=backoffice:order:write
@@ -141,7 +139,8 @@ integration:
 
 ## API: Update Order
 
-This guide provides instructions on how to update order statuses using the Selldone API. It outlines the steps of order fulfillment and how to communicate these updates through API calls.
+This guide provides instructions on how to update order statuses using the Selldone API. It outlines the steps of order
+fulfillment and how to communicate these updates through API calls.
 
 ### Updating Order Status
 
@@ -153,10 +152,10 @@ https://api.selldone.com/shops/{shop-id-here}/process-center/baskets/{order-id-h
 
 Replace `{shop-id-here}` with your actual shop ID and `{order-id-here}` with the specific order ID.
 
-
 ![Order Status Workflow](_doc/order-status.png)
 
-Selldone defines 5 steps in the order fulfillment process, which you can manage by updating the `delivery_state` parameter. Each state should be called sequentially after the previous one.
+Selldone defines 5 steps in the order fulfillment process, which you can manage by updating the `delivery_state`
+parameter. Each state should be called sequentially after the previous one.
 
 #### 1. Confirm Order (`OrderConfirm`)
 
@@ -165,7 +164,9 @@ This step indicates that the order has been reviewed and confirmed.
 **Parameters:**
 
 - `state`: `OrderConfirm`
-- `list`: An array of `item.id`s that are confirmed. If you cannot fulfill an item, do not include its ID in this list. This helps the merchant understand how much to refund to the buyer in the Selldone panel. `null` means all items are confirmed.
+- `list`: An array of `item.id`s that are confirmed. If you cannot fulfill an item, do not include its ID in this list.
+  This helps the merchant understand how much to refund to the buyer in the Selldone panel. `null` means all items are
+  confirmed.
 
 ```bash
 curl -X POST "https://api.selldone.com/shops/12345/process-center/baskets/67890/state" \
@@ -177,7 +178,9 @@ curl -X POST "https://api.selldone.com/shops/12345/process-center/baskets/67890/
          }'
 
 ```
+
 Response 200:
+
 ```json
 {
   "delivery_state": "OrderConfirm",
@@ -190,23 +193,23 @@ Response 200:
       "product_id": 2346,
       "variant_id": null,
       ...
-    }
-  ,...
-   
+    },
+    ...
   ]
 }
 
 ```
 
-
 #### 2. Prepare Order (`PreparingOrder`)
 
-At this stage, you set packaging information and indicate that the order is ready to ship (e.g., ready for courier pickup).
+At this stage, you set packaging information and indicate that the order is ready to ship (e.g., ready for courier
+pickup).
 
 **Parameters:**
 
 - `state`: `PreparingOrder`
-- `delivery_info`: If there are no changes to `delivery_info`, send the original `order.delivery_info` in this parameter. `null` means no changes.
+- `delivery_info`: If there are no changes to `delivery_info`, send the original `order.delivery_info` in this
+  parameter. `null` means no changes.
 
 ```bash
 curl -X POST "https://api.selldone.com/shops/12345/process-center/baskets/67890/state" \
@@ -236,7 +239,9 @@ curl -X POST "https://api.selldone.com/shops/12345/process-center/baskets/67890/
          }'
 
 ```
+
 Response 200:
+
 ```json
 {
   "delivery_state": "PreparingOrder",
@@ -264,7 +269,9 @@ curl -X POST "https://api.selldone.com/shops/12345/process-center/baskets/67890/
          }'
 
 ```
+
 Response 200:
+
 ```json
 {
   "delivery_state": "SentOrder",
@@ -272,7 +279,6 @@ Response 200:
 }
 
 ```
-
 
 #### 4. Deliver to Customer (`ToCustomer`)
 
@@ -293,7 +299,9 @@ curl -X POST "https://api.selldone.com/shops/12345/process-center/baskets/67890/
          }'
 
 ```
+
 Response 200:
+
 ```json
 {
   "delivery_state": "ToCustomer",
@@ -307,7 +315,6 @@ Response 200:
 
 ✨ **[Update Order Demo](https://selldone.github.io/erp/order-update-state.html)**.
 
-
 #### Shipping Failed and Order Returned
 
 If the shipping fails and the order is returned, send a `POST` request to the following endpoint:
@@ -316,13 +323,12 @@ If the shipping fails and the order is returned, send a `POST` request to the fo
 https://api.selldone.com/shops/{shop-id-here}/process-center/baskets/{order-id-here}/delivery-returned
 ```
 
-
 #### Important Notes
 
-- **Sequential Updates:** Each state should be called after the previous state. For example, you should only send `SentOrder` if `PreparingOrder` has already been called.
-- **ERP Limitations:** If your ERP system does not support multi-step fulfillment processes, you can create multiple API calls in a series to update the order status to the final state.
-
-
+- **Sequential Updates:** Each state should be called after the previous state. For example, you should only send
+  `SentOrder` if `PreparingOrder` has already been called.
+- **ERP Limitations:** If your ERP system does not support multi-step fulfillment processes, you can create multiple API
+  calls in a series to update the order status to the final state.
 
 ## API: Set Tracking Information
 
@@ -342,4 +348,73 @@ https://api.selldone.com/shops/{shop-id-here}/process-center/baskets/{order-id-h
 ✨ **[Set Order Tracking Demo](https://selldone.github.io/erp/order-set-tracking.html)**.
 
 ### Web Page
+
 https://selldone.github.io/erp/
+
+## Selldone Authentication Scopes
+
+# Selldone Authentication Scopes
+
+| Scope                               | Description                   |
+|-------------------------------------|-------------------------------|
+| `backoffice:order:read`             | Read orders                   |
+| `backoffice:order:write`            | Modify orders                 |
+| `backoffice:support-tickets`        | Access support tickets        |
+| `backoffice:shop:read`              | Read shop details             |
+| `backoffice:shop:write`             | Modify shop details           |
+| `backoffice:shop:add`               | Add a new shop                |
+| `backoffice:shop:delete`            | Delete a shop                 |
+| `backoffice:giftcard:write`         | Create/edit gift cards        |
+| `backoffice:giftcard:read`          | Read gift cards               |
+| `backoffice:faq:write`              | Create/edit FAQ entries       |
+| `backoffice:faq:read`               | Read FAQ entries              |
+| `backoffice:category:write`         | Create/edit categories        |
+| `backoffice:category:read`          | Read categories               |
+| `backoffice:product:write`          | Create/edit products          |
+| `backoffice:product:read`           | Read products                 |
+| `backoffice:report:read`            | Read reports                  |
+| `backoffice:finance:write`          | Manage financial records      |
+| `backoffice:finance:read`           | Read financial records        |
+| `backoffice:page:write`             | Create/edit pages             |
+| `backoffice:page:read`              | Read pages                    |
+| `backoffice:logistic:write`         | Manage logistics              |
+| `backoffice:logistic:read`          | Read logistics details        |
+| `backoffice:staff:write`            | Manage staff accounts         |
+| `backoffice:staff:read`             | Read staff details            |
+| `backoffice:business-profile:write` | Edit business profile         |
+| `backoffice:business-profile:read`  | Read business profile         |
+| `backoffice:discount-code:write`    | Manage discount codes         |
+| `backoffice:discount-code:read`     | Read discount codes           |
+| `backoffice:wallet:write`           | Manage user wallets/accounts  |
+| `backoffice:wallet:read`            | Read user wallets/accounts    |
+| `backoffice:notifications`          | Access notifications          |
+| `backoffice:coupon:write`           | Manage coupons                |
+| `backoffice:coupon:read`            | Read coupons                  |
+| `backoffice:offer:write`            | Manage offers                 |
+| `backoffice:offer:read`             | Read offers                   |
+| `backoffice:cashback:write`         | Manage cashback programs      |
+| `backoffice:cashback:read`          | Read cashback programs        |
+| `backoffice:lottery:write`          | Manage lottery programs       |
+| `backoffice:lottery:read`           | Read lottery programs         |
+| `backoffice:community:write`        | Manage community posts        |
+| `backoffice:community:read`         | Read community posts          |
+| `backoffice:customer:write`         | Manage customer data          |
+| `backoffice:customer:read`          | Read customer data            |
+| `backoffice:ribbon:write`           | Manage ribbons                |
+| `backoffice:ribbon:read`            | Read ribbons                  |
+| `backoffice:ai:write`               | Manage AI settings            |
+| `backoffice:ai:read`                | Read AI settings              |
+| `backoffice:vendor-payment:write`   | Manage vendor payments        |
+| `backoffice:vendor-payment:read`    | Read vendor payments          |
+| `backoffice:company:write`          | Manage company data           |
+| `backoffice:company:read`           | Read company data             |
+| `backoffice:note:write`             | Manage notes                  |
+| `backoffice:note:read`              | Read notes                    |
+| `backoffice:affiliate:write`        | Manage affiliates             |
+| `backoffice:affiliate:read`         | Read affiliates               |
+| `backoffice:print:write`            | Manage print-related settings |
+| `backoffice:print:read`             | Read print-related settings   |
+| `backoffice:reviews:write`          | Manage reviews                |
+| `backoffice:reviews:read`           | Read reviews                  |
+| `backoffice:property-set:write`     | Manage property sets          |
+| `backoffice:property-set:read`      | Read property sets            |
